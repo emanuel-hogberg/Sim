@@ -1,0 +1,21 @@
+Orchestrator
+
+Queue trigger
+Messages:
+-Act (agent id)
+--returns raw data and differentially private data
+-Train(model)
+-Test(model)
+
+Lab
+-Model
+
+
+agent (Sim)
+-interests: 0-1, randomized
+-act = purchase something based on interests, but not necessarily
+
+
+
+
+Interests
