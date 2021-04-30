@@ -6,7 +6,8 @@
         public int MinExtraInterestedIn { get; set; }
         public int MaxExtraInterestedIn { get; set; }
         public double MinRandomHighExtent { get; set; }
-        public bool UseInterestExtentForPurchaseQuantity { get; internal set; }
-        public int MaxQuantityToPurchase { get; internal set; }
+        public bool UseInterestExtentForPurchaseQuantity { get; set; }
+        public int MaxQuantityToPurchase { get; set; }
+        public const string AgentConfigElement = "AgentConfig";
     }
 }

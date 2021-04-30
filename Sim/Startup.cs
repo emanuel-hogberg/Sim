@@ -22,7 +22,7 @@ namespace Sim
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .Configure<AgentConfig>(Configuration)
+                .Configure<AgentConfig>(Configuration.GetSection((AgentConfig.AgentConfigElement)))
                 .AddSingleton<IRepositoryService, JsonRepositoryService>()
                 .AddSingleton<IAgentService, AgentService>()
                 .AddControllers();

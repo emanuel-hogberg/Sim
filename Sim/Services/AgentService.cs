@@ -24,7 +24,7 @@ namespace Sim.Services
             _random = new Random(seed);
         }
 
-        public void Act(Agent agent)
+        public void MakePurchase(Agent agent)
         {
             var pivot = _random.NextDouble() * agent.InterestExtentSum;
 
@@ -37,16 +37,25 @@ namespace Sim.Services
                 throw new InvalidOperationException("Did not find an interest to purchase.");
             }
 
-            agent.Purchases.Add(new Purchase
+            var quantityToAdd = GetQuantity(interestToPurchase);
+
+            if (agent.Purchases.FirstOrDefault(purchase => purchase.Category == interestToPurchase.Category) is Purchase existingPurchase)
             {
-                Category = interestToPurchase.Category,
-                Quantity = GetQuantity(interestToPurchase)
-            });
+                existingPurchase.Quantity += quantityToAdd;
+            }
+            else
+            {
+                agent.Purchases.Add(new Purchase
+                {
+                    Category = interestToPurchase.Category,
+                    Quantity = quantityToAdd
+                });
+            }
         }
 
         private int GetQuantity(Interest interestToPurchase) =>
             _config.UseInterestExtentForPurchaseQuantity ?
-                (int)((_random.Next(1, _config.MaxQuantityToPurchase) + 1) * interestToPurchase.Extent)
+                (int)((_random.Next(0, _config.MaxQuantityToPurchase) + 1) * interestToPurchase.Extent) + 1
                 : _random.Next(1, _config.MaxQuantityToPurchase);
 
         public void EnsureInitialized(Agent agent)
@@ -76,7 +85,7 @@ namespace Sim.Services
             SetPartialSums(interests);
         }
 
-        private void SetPartialSums(List<Interest> interests)
+        private static void SetPartialSums(List<Interest> interests)
         {
             double extentSum = 0.0;
             for (int i = 0; i < interests.Count; i++)
@@ -106,7 +115,7 @@ namespace Sim.Services
                             interest.Extent = _random.NextDouble() * _config.MaxRandomLowExtent);
         }
 
-        private IEnumerable<Category> AllAvailableCategories()
+        private static IEnumerable<Category> AllAvailableCategories()
         {
             return Enum.GetValues<Category>();
         }

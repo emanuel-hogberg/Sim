@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Sim.Interfaces;
 using Sim.Models;
 using System;
@@ -10,16 +9,13 @@ namespace Sim.Controllers
     [Route("[controller]")]
     public class SimController : ControllerBase
     {
-        private readonly ILogger<SimController> _logger;
         private readonly IRepositoryService _repositoryService;
         private readonly IAgentService _agentService;
 
         public SimController(
-            ILogger<SimController> logger,
             IRepositoryService repositoryService,
             IAgentService agentService)
         {
-            _logger = logger;
             _repositoryService = repositoryService;
             _agentService = agentService;
         }
@@ -34,7 +30,7 @@ namespace Sim.Controllers
 
             return UsingAgent(agentName, agent =>
             {
-                _agentService.Act(agent);
+                _agentService.MakePurchase(agent);
 
                 return agent;
             });
