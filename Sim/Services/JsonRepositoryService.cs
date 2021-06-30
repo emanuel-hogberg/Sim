@@ -34,7 +34,13 @@ namespace Sim.Services
         }
         private static string GetFilePath(string agentName)
         {
-            return Path.Combine(Directory.GetCurrentDirectory(), RepositoryFolder, agentName) + ".json";
+            var directory = Path.Combine(Directory.GetCurrentDirectory(), RepositoryFolder);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            return Path.Combine(directory, agentName) + ".json";
         }
     }
 }
